@@ -40,7 +40,7 @@ class ServiceController extends Controller
                 $contact->save();
                 return response()->json(['message'=>'enregistrement réussi!']);
             } catch (Exception $e) {
-              return response()->json(['message'=>'enregistrement échoué']);
+              return response()->json(['message'=>'enregistrement échoué !']);
             }
       
     }
