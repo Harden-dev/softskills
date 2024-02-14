@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\ContactController;
+use App\Http\Controllers\API\DevisController;
 use App\Http\Controllers\API\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,3 +30,8 @@ Route::post('/message-save',[ ContactController::class,'store']);
 
 Route::get('/services-list', [ServiceController::class, 'index']);
 Route::post('services-save', [ServiceController::class, 'store']);
+
+// route pour les demandes de devis
+
+Route::get('/devis-list', [DevisController::class, 'index']);
+Route::post('devis-save', [DevisController::class, 'store']);
