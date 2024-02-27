@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Devis;
 use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
 class DevisController extends Controller
 {
     //
@@ -34,6 +34,7 @@ class DevisController extends Controller
             try {
                 $devis = new Devis(
                     [
+                    'id'=>Str::random(6),
                      'nature_client'=>Request('nature_client'),
                      'type_service'=>Request('type_service'),
                      'budget'=>Request('budget'),
@@ -50,5 +51,18 @@ class DevisController extends Controller
               return response()->json(['message'=>'enregistrement échoué !']);
             }
       
+    }
+
+    public function destroy($id)
+    {
+        $devis = Devis::find($id);
+        if(!$devis)
+        {
+            return response()->json(['message'=>'devis snon dispo'],401);
+        }
+
+        $devis->delete();
+        return response()->json(['message'=>'suppression reussie' ],200);  
+
     }
 }

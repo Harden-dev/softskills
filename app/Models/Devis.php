@@ -11,6 +11,7 @@ class Devis extends Model
 
     protected $fillable =
     [
+        'id',
         'nature_client',
         'type_service',
         'budget',
@@ -19,4 +20,8 @@ class Devis extends Model
         'email',
         'description'
     ];
+
+    public $incrementing=false;
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
 }
