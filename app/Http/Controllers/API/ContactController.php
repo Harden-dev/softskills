@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactNotification;
 use App\Models\Contact;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ContactController extends Controller
@@ -41,6 +43,17 @@ class ContactController extends Controller
                     );
                 
                 $contact->save();
+
+                $adminEmail = 'micstech.28@gmail.com';
+                $directionEmail = 'direction@softskills.ci';
+                $details = [
+                    'nom_prenom' => $contact->nom_prenom,
+                    'email' => $contact->email,
+                    'telephone' => $contact->telephone,
+                    'message' =>$contact->message,
+                ];
+                
+                Mail::to($adminEmail)->cc($directionEmail)->send(new ContactNotification($details));
                 return response()->json(['message'=>'enregistrement réussi']);
             } catch (Exception $e) {
             //   return response()->json(['message'=>'enregistrement rejeté']);

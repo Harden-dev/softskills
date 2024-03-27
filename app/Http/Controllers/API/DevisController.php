@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\DevisNotification;
 use App\Models\Devis;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 class DevisController extends Controller
 {
@@ -46,6 +48,20 @@ class DevisController extends Controller
                     );
                 
                 $devis->save();
+                $adminEmail = 'micstech.28@gmail.com';
+                $directionEmail= 'direction@softskills.ci';
+                $devisDetails = [
+                    'nature_client' => $devis->nature_client,
+                    'type_service' => $devis->type_service,
+                    'budget' => $devis->budget,
+                    'nom_client' =>$devis->nom_client,
+                    'num_tel' =>$devis->num_tel,
+                    'email' =>$devis->email,
+                    'description' =>$devis->description,
+                    
+                ];
+                
+                Mail::to($adminEmail)->cc($directionEmail)->send(new DevisNotification($devisDetails));
                 return response()->json(['message'=>'enregistrement réussi!']);
             } catch (Exception $e) {
               return response()->json(['message'=>'enregistrement échoué !']);

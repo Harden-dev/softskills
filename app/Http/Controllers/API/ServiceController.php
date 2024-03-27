@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ServiceNotification;
 use App\Models\Service;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ServiceController extends Controller
@@ -40,6 +42,19 @@ class ServiceController extends Controller
                     );
                 
                 $service->save();
+
+                $adminEmail = 'micstech.28@gmail.com';
+                $directionEmail= 'direction@softskills.ci';
+
+                $serviceDetails = [
+                    'nom_prenom' => $service->nom_prenom,
+                    'email' => $service->email,
+                    'contact' => $service->contact,
+                    'type_services' =>$service->type_services,
+                    
+                ];
+                
+                Mail::to($adminEmail)->cc($directionEmail)->send(new ServiceNotification($serviceDetails));
                 return response()->json(['message'=>'enregistrement réussi!']);
             } catch (Exception $e) {
               return response()->json(['message'=>'enregistrement échoué !']);
