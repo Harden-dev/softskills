@@ -1,0 +1,2417 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentation API softskills",
+        "description": "Documentation API softskills",
+        "contact": {
+            "name": "Kouame Banh",
+            "email": "kouamebanh@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8001/api/v2",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/v2/article/list": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Get all articles",
+                "description": "Get all articles",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Article"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No articles found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v2/published/articles": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Get all published articles",
+                "description": "Get all published articles",
+                "operationId": "publishedArticles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Article"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No articles found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v2/scheduled/articles": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Get all scheduled articles",
+                "description": "Get all scheduled articles",
+                "operationId": "scheduledArticles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Article"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No articles found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v2/add/article": {
+            "post": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Create a new article",
+                "description": "Create a new article",
+                "operationId": "createArticle",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Article"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Article"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "title": [
+                                                    "The title field is required."
+                                                ],
+                                                "content": [
+                                                    "The content field is required."
+                                                ],
+                                                "category_id": [
+                                                    "The category id field is required."
+                                                ],
+                                                "published_at": [
+                                                    "The published at field is not required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v2/article/{slug}": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Get an article by slug",
+                "description": "Get an article by slug",
+                "operationId": "getArticleBySlug",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug of the article",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Article"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v2/update/article/{id}": {
+            "put": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Update an article",
+                "description": "Update an article",
+                "operationId": "updateArticle",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the article",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Article"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Article"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "title": [
+                                                    "The title field is required."
+                                                ],
+                                                "content": [
+                                                    "The content field is required."
+                                                ],
+                                                "category_id": [
+                                                    "The category id field is required."
+                                                ],
+                                                "published_at": [
+                                                    "The published at field is not required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v2/delete/article/{id}": {
+            "delete": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Delete an article",
+                "description": "Delete an article",
+                "operationId": "deleteArticle",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the article",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article deleted successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Article"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Créer un nouvel utilisateur",
+                "description": "Enregistre un nouvel utilisateur et envoie un e-mail de confirmation.",
+                "operationId": "e66f8a7452e13b03ae4e77dbb42e435c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "email",
+                                    "phone",
+                                    "job_title",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "Jean"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Dupont"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jean.dupont@example.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "job_title": {
+                                        "type": "string",
+                                        "example": "Manager"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur créé avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User created successfully"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "first_name": {
+                                                    "type": "string",
+                                                    "example": "Jean"
+                                                },
+                                                "last_name": {
+                                                    "type": "string",
+                                                    "example": "Dupont"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "jean.dupont@example.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "123456789"
+                                                },
+                                                "job_title": {
+                                                    "type": "string",
+                                                    "example": "Manager"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "pending"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Cette adresse e-mail est déjà utilisée."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Une erreur s'est produite."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Obtenir un JWT via les identifiants fournis",
+                "operationId": "d618a255475240ba3d40cc39692cd924",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "jean.dupont@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "JWT généré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Identifiants non valides",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Obtenir les informations de l'utilisateur connecté",
+                "operationId": "3604fee5a25e84fa9437aed01a34e157",
+                "responses": {
+                    "200": {
+                        "description": "Informations de l'utilisateur récupérées avec succès"
+                    },
+                    "401": {
+                        "description": "Non autorisé, jeton manquant ou invalide",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Déconnexion de l'utilisateur",
+                "operationId": "1e357eb2c93a1bdabebcebfa088332bf",
+                "responses": {
+                    "200": {
+                        "description": "Déconnexion réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Rafraîchir le token JWT",
+                "operationId": "5149fd8669ace65a6393c0a80b7d25e3",
+                "responses": {
+                    "200": {
+                        "description": "Token rafraîchi avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/change-password": {
+            "put": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Changer le mot de passe de l'utilisateur",
+                "operationId": "af4b7c2a18875fa1101d3b09fc0ce076",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "example": "ancienMotDePasse123"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "example": "nouveauMotDePasse123"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "example": "nouveauMotDePasse123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe changé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Mot de passe actuel incorrect",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/reset/password/mail": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Réinitialiser le mot de passe de l'utilisateur",
+                "description": "Cette fonction permet de réinitialiser le mot de passe d'un utilisateur et d'envoyer un nouveau mot de passe par email.",
+                "operationId": "b98da800899e077083940a17b8ca8455",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Adresse e-mail de l'utilisateur",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Mot de passe réinitialisé et envoyé par email",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Un nouveau mot de passe a été envoyé à votre adresse e-mail"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Utilisateur non trouvé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "L'utilisateur n'existe pas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Une erreur est survenue lors de la réinitialisation du mot de passe"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Le champ email est obligatoire."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v2/category/list": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get list of categories",
+                "description": "Returns list of categories",
+                "operationId": "getCategories",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    },
+                    "500": {
+                        "description": "Error retrieving categories"
+                    }
+                }
+            }
+        },
+        "/api/v2/add/category": {
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Create new category",
+                "description": "Returns category data",
+                "operationId": "storeCategory",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating category"
+                    }
+                }
+            }
+        },
+        "/api/category/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get category details",
+                "description": "Returns category details",
+                "operationId": "getCategoryById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    },
+                    "500": {
+                        "description": "Error retrieving category"
+                    }
+                }
+            }
+        },
+        "/api/v2/update/category/{id}": {
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Update existing category",
+                "description": "Returns updated category data",
+                "operationId": "updateCategory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error updating category"
+                    }
+                }
+            }
+        },
+        "/api/v2/delete/category/{id}": {
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete existing category",
+                "description": "Deletes a category",
+                "operationId": "deleteCategory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category deleted successfully"
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    },
+                    "500": {
+                        "description": "Error deleting category"
+                    }
+                }
+            }
+        },
+        "/api/v2/article/{articleId}/comments": {
+            "get": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Get list of comments",
+                "description": "Returns list of comments",
+                "operationId": "getComments",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "description": "Article ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comments"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comments not found"
+                    },
+                    "500": {
+                        "description": "Error retrieving comments"
+                    }
+                }
+            }
+        },
+        "/api/v2/add/comment/article/{articleId}": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Create new comment",
+                "description": "Returns comment data",
+                "operationId": "storeComment",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Comments"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Comments"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found"
+                    },
+                    "500": {
+                        "description": "Error creating comment"
+                    }
+                }
+            }
+        },
+        "/api/v2/reply/comment/{commentId}/article/{articleId}": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Reply to a comment",
+                "description": "Returns comment data",
+                "operationId": "replyComment",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Comments"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Comments"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found"
+                    },
+                    "500": {
+                        "description": "Error creating comment"
+                    }
+                }
+            }
+        },
+        "/api/v2/replies/article/{articleId}/comment/{commentId}": {
+            "get": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Get list of replies",
+                "description": "Returns list of replies",
+                "operationId": "getReplies",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "description": "Article ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "Comment ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comments"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Replies not found"
+                    },
+                    "500": {
+                        "description": "Error retrieving replies"
+                    }
+                }
+            }
+        },
+        "/api/v2/comment/{id}": {
+            "get": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Get comment details",
+                "description": "Returns comment details",
+                "operationId": "getCommentById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Comment id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Comments"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found"
+                    },
+                    "500": {
+                        "description": "Error retrieving comment"
+                    }
+                }
+            }
+        },
+        "/api/v2/update/comment/{id}": {
+            "put": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Update existing comment",
+                "description": "Returns updated comment data",
+                "operationId": "updateComment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Comment ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Comments"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Comments"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found"
+                    },
+                    "500": {
+                        "description": "Error updating comment"
+                    }
+                }
+            }
+        },
+        "/api/v2/delete/comment/{id}": {
+            "delete": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Delete existing comment",
+                "description": "Deletes a comment",
+                "operationId": "deleteComment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Comment id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment deleted successfully"
+                    },
+                    "404": {
+                        "description": "Comment not found"
+                    },
+                    "500": {
+                        "description": "Error deleting comment"
+                    }
+                }
+            }
+        },
+        "/api/v2/contact/list": {
+            "get": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Get list of contacts",
+                "description": "Returns list of contacts",
+                "operationId": "getContacts",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contact not found"
+                    },
+                    "500": {
+                        "description": "Error retrieving contacts"
+                    }
+                }
+            }
+        },
+        "/api/v2/contact": {
+            "post": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Add a new contact",
+                "description": "Returns contact data",
+                "operationId": "addContact",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Contact"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contact created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contact not found"
+                    },
+                    "500": {
+                        "description": "Error creating contact"
+                    }
+                }
+            }
+        },
+        "/api/v2/update/contact/{id}": {
+            "put": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Update an existing contact",
+                "description": "Returns updated contact data",
+                "operationId": "updateContact",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Contact"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contact updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contact not found"
+                    },
+                    "500": {
+                        "description": "Error updating contact"
+                    }
+                }
+            }
+        },
+        "/api/v2/contact/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Delete an existing contact",
+                "description": "Returns deleted contact data",
+                "operationId": "deleteContact",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contact deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contact not found"
+                    },
+                    "500": {
+                        "description": "Error deleting contact"
+                    }
+                }
+            }
+        },
+        "/api/v2/auth/google": {
+            "get": {
+                "tags": [
+                    "Google"
+                ],
+                "summary": "Redirect to Google login",
+                "description": "Redirect to Google login",
+                "operationId": "redirectToGoogle",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/api/v2/auth/google/callback": {
+            "get": {
+                "tags": [
+                    "Google"
+                ],
+                "summary": "Handle Google callback",
+                "description": "Handle Google callback",
+                "operationId": "handleGoogleCallback",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/api/v2/quote/list": {
+            "get": {
+                "tags": [
+                    "Devis"
+                ],
+                "summary": "Get list of quotes",
+                "description": "Returns list of quotes",
+                "operationId": "getQuotes",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Devis"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Quote not found"
+                    },
+                    "500": {
+                        "description": "Error retrieving quotes"
+                    }
+                }
+            }
+        },
+        "/api/v2/quote": {
+            "post": {
+                "tags": [
+                    "Devis"
+                ],
+                "summary": "Add a new quote",
+                "description": "Add a new quote",
+                "operationId": "addQuote",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Devis"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Quote created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Devis"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating quote",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v2/quote/upate/{id}": {
+            "put": {
+                "tags": [
+                    "Devis"
+                ],
+                "summary": "Update an existing quote",
+                "description": "Update an existing quote",
+                "operationId": "updateQuote",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Quote ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Devis"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Quote updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Devis"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Quote not found"
+                    },
+                    "500": {
+                        "description": "Error updating quote"
+                    }
+                }
+            }
+        },
+        "/api/v2/quote/{id}": {
+            "delete": {
+                "tags": [
+                    "Devis"
+                ],
+                "summary": "Delete a quote",
+                "description": "Delete a quote",
+                "operationId": "deleteQuote",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Quote ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote deleted successfully"
+                    },
+                    "404": {
+                        "description": "Quote not found"
+                    },
+                    "500": {
+                        "description": "Error deleting quote"
+                    }
+                }
+            }
+        },
+        "/api/v2/subscription/list": {
+            "get": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Get list of subscriptions",
+                "description": "Returns list of subscriptions",
+                "operationId": "getSubscriptions",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Subscription not found"
+                    },
+                    "500": {
+                        "description": "Error retrieving subscriptions"
+                    }
+                }
+            }
+        },
+        "/api/v2/subscription": {
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Add a new subscription",
+                "description": "Add a new subscription",
+                "operationId": "addSubscription",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Subscription"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating subscription"
+                    }
+                }
+            }
+        },
+        "/api/v2/update/subscription/{id}": {
+            "put": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Update an existing subscription",
+                "description": "Update an existing subscription",
+                "operationId": "updateSubscription",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Subscription ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Subscription"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Subscription updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Subscription not found"
+                    },
+                    "500": {
+                        "description": "Error updating subscription"
+                    }
+                }
+            }
+        },
+        "/api/v2/delete/subscription/{id}": {
+            "delete": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Delete an existing subscription",
+                "description": "Delete an existing subscription",
+                "operationId": "deleteSubscription",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Subscription ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subscription deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Subscription not found"
+                    },
+                    "500": {
+                        "description": "Error deleting subscription"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Article": {
+                "title": "Article",
+                "description": "Modèle de l'article",
+                "required": [
+                    "title, content, category_id, file"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Article title",
+                        "type": "string",
+                        "example": "Article title"
+                    },
+                    "content": {
+                        "description": "Article content",
+                        "type": "string",
+                        "example": "Article content"
+                    },
+                    "category_id": {
+                        "description": "Category id",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "file": {
+                        "description": "Article image",
+                        "type": "file",
+                        "example": "image.jpg"
+                    },
+                    "published_at": {
+                        "description": "Article published_at",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2023-01-01"
+                    }
+                },
+                "type": "object"
+            },
+            "Category": {
+                "title": "Category",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Category name"
+                    }
+                },
+                "type": "object"
+            },
+            "Comments": {
+                "title": "Comment",
+                "description": "Modèle de commentaire",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "Commentaire"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "article_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "parent_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "user": {
+                        "description": "User",
+                        "type": "object",
+                        "example": {
+                            "id": 1,
+                            "name": "John Doe",
+                            "email": "QHn4o@example.com",
+                            "email_verified_at": "2023-01-01T00:00:00Z",
+                            "created_at": "2023-01-01T00:00:00Z",
+                            "updated_at": "2023-01-01T00:00:00Z"
+                        }
+                    },
+                    "article": {
+                        "description": "Article",
+                        "type": "object",
+                        "example": {
+                            "id": 1,
+                            "title": "Article title",
+                            "content": "Article content",
+                            "user_id": 1,
+                            "created_at": "2023-01-01T00:00:00Z",
+                            "updated_at": "2023-01-01T00:00:00Z"
+                        }
+                    },
+                    "replies": {
+                        "description": "Replies",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Comments"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Contact": {
+                "required": [
+                    "name",
+                    "email",
+                    "tel"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "j3v5m@example.com"
+                    },
+                    "tel": {
+                        "type": "string",
+                        "example": "1234567890"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Message"
+                    }
+                },
+                "type": "object"
+            },
+            "Devis": {
+                "required": [
+                    "name",
+                    "email",
+                    "tel",
+                    "personality",
+                    "dev",
+                    "budget"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "t5TtB@example.com"
+                    },
+                    "tel": {
+                        "type": "string",
+                        "example": "1234567890"
+                    },
+                    "personality": {
+                        "type": "string",
+                        "example": "particulier"
+                    },
+                    "dev": {
+                        "type": "string",
+                        "example": "site vitrine"
+                    },
+                    "budget": {
+                        "type": "string",
+                        "example": "1000"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Description"
+                    }
+                },
+                "type": "object"
+            },
+            "Subscription": {
+                "required": [
+                    "name",
+                    "email",
+                    "tel"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": " B4TtD@example.com"
+                    },
+                    "tel": {
+                        "type": "string",
+                        "example": "1234567890"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "400": {
+                "description": "Error retrieving Google login"
+            },
+            "500": {
+                "description": "Error handling Google callback"
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "description": "Utilisez un jeton JWT pour l'authentification.",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Articles",
+            "description": "Articles"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Categories",
+            "description": "Categories"
+        },
+        {
+            "name": "Comments",
+            "description": "Comments"
+        },
+        {
+            "name": "Contacts",
+            "description": "Contacts"
+        },
+        {
+            "name": "Google",
+            "description": "Google"
+        },
+        {
+            "name": "Devis",
+            "description": "Devis"
+        },
+        {
+            "name": "Subscriptions",
+            "description": "Subscriptions"
+        }
+    ]
+}
