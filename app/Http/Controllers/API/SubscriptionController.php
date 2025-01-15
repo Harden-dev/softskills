@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SubscriptionResource;
 use App\Services\SubscriptionService;
 use Exception;
 use Illuminate\Http\Request;
 
-class SubscriptionController extends Controller
+class SubscriptionController extends BaseController
 {
     /**
      * @OA\Schema(
@@ -51,7 +52,7 @@ class SubscriptionController extends Controller
     public function index(Request $request)
     {
         $subscriptions = $this->subscriptionService->getAll();
-        return response()->json($subscriptions);
+        return $this->sendResponse(new SubscriptionResource(collect($subscriptions)), 'Subscriptions retrieved successfully');
     }
 
     /**
@@ -88,17 +89,9 @@ class SubscriptionController extends Controller
         try {
             $subscription = $this->subscriptionService->create($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Subscription created successfully',
-                'data' => $subscription
-            ], 201);
+            return $this->sendResponse(new SubscriptionResource($subscription), 'Subscription created successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error creating subscription',
-                'error' => $e->getMessage()
-            ], 500);
+            return $this->sendError('Error creating subscription', $e->getMessage());
         }
     }
 
@@ -107,17 +100,9 @@ class SubscriptionController extends Controller
         try {
             $subscription = $this->subscriptionService->findById($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Subscription retrieved successfully',
-                'data' => $subscription
-            ]);
+            return $this->sendResponse(new SubscriptionResource($subscription), 'Subscription retrieved successfully');
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error retrieving subscription',
-                'error' => $e->getMessage()
-            ], 500);
+           return $this->sendError('Subscription not found', $e->getMessage());
         }
     }
 
@@ -167,17 +152,9 @@ class SubscriptionController extends Controller
 
         try {
             $subscription = $this->subscriptionService->update( $validated, $id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Subscription updated successfully',
-                'data' => $subscription
-            ], 200);
+          return $this->sendResponse(new SubscriptionResource($subscription), 'Subscription updated successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ]);
+           return $this->sendError('Error updating subscription', $th->getMessage());
         }
     }
 
@@ -217,17 +194,9 @@ class SubscriptionController extends Controller
     {
         try {
             $subscription = $this->subscriptionService->delete($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Subscription deleted successfully',
-                'data' => $subscription
-            ], 200);
+            return $this->sendResponse(new SubscriptionResource($subscription), 'Subscription deleted successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ]);
+            return $this->sendError('Error deleting subscription', $th->getMessage());
         }
     }
 }

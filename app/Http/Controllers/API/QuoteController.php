@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\QuoteResource;
 use App\Services\QuoteService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class QuoteController extends Controller
+class QuoteController extends BaseController 
 {
     /**
      * @OA\Schema(
@@ -54,7 +55,7 @@ class QuoteController extends Controller
     public function index(Request $request)
     {
         $quotes = $this->quoteService->getAll();
-        return response()->json($quotes);
+        return $this->sendResponse(new QuoteResource(collect($quotes)), 'Quotes retrieved successfully');
     }
 
     /**
@@ -103,19 +104,11 @@ class QuoteController extends Controller
         try {
             $quote = $this->quoteService->create($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Quote created successfully',
-                'data' => $quote
-            ], 201);
+           return $this->sendResponse(new QuoteResource($quote), 'Quote created successfully');
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error creating quote',
-                'error' => $e->getMessage()
-            ], 500);
+            return $this->sendError('Error creating quote', $e->getMessage());
         }
     }
 
@@ -125,17 +118,9 @@ class QuoteController extends Controller
         try {
             $quote = $this->quoteService->findById($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Quote retrieved successfully',
-                'data' => $quote
-            ]);
+           return $this->sendResponse(new QuoteResource($quote), 'Quote retrieved successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error retrieving quote',
-                'error' => $e->getMessage()
-            ], 500);
+            return $this->sendError('Error retrieving quote', $e->getMessage());
         }
     }
 
@@ -192,17 +177,9 @@ class QuoteController extends Controller
 
         try {
             $quote = $this->quoteService->update($validated, $id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Quote updated successfully',
-                'data' => $quote
-            ], 201);
+            return $this->sendResponse(new QuoteResource($quote), 'Quote updated successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating quote',
-                'error' => $th->getMessage()
-            ], 500);
+            return $this->sendError('Error updating quote', $th->getMessage());
         }
     }
 
@@ -241,17 +218,9 @@ class QuoteController extends Controller
     {
         try {
             $quote = $this->quoteService->delete($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Quote deleted successfully',
-                'data' => $quote
-            ], 200);
+            return $this->sendResponse(new QuoteResource($quote), 'Quote deleted successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting quote',
-                'error' => $th->getMessage()
-            ], 500);
+            return $this->sendError('Error deleting quote', $th->getMessage());
         }
     }
 }

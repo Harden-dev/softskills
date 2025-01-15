@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategorieResource;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
-class CategorieController extends Controller
+class CategorieController extends BaseController
 {
     /**
      *@OA\Schema(
@@ -101,19 +102,11 @@ class CategorieController extends Controller
         ]);
 
         try {
-            return $this->categoryService->create($validated);
+            $category =  $this->categoryService->create($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Category created successfully',
-                'data' => $category
-            ], 201);
+           return $this->sendResponse(new CategorieResource($category), 'Category created successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                "error" => "erreur survenue
-                "
-            ], 500);
+            return $this->sendError('Error creating category', $th->getMessage());
         }
     }
 
@@ -153,17 +146,10 @@ class CategorieController extends Controller
     {
         try {
             $category = $this->categoryService->findByid($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Category retrieved successfully',
-                'data' => $category
-            ], 200);
+
+            return $this->sendResponse(new CategorieResource($category), 'Category retrieved successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Une erreur est survenue',
-                'error' => $th->getMessage()
-            ], 500);
+            return $this->sendError('Error retrieving category', $th->getMessage());
         }
     }
 
@@ -225,17 +211,9 @@ class CategorieController extends Controller
 
             $category = $this->categoryService->update($validated, $id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Category updated successfully',
-                'data' => $category
-            ], 200);
+            return $this->sendResponse(new CategorieResource($category), 'Category updated successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating category',
-                'error' => $th->getMessage()
-            ], 500);
+            return $this->sendError('Error updating category', $th->getMessage());
         }
     }
 
@@ -283,17 +261,9 @@ class CategorieController extends Controller
             }
             return $this->categoryService->delete($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Category deleted successfully',
-                'data' => $category
-            ], 200);
+            return $this->sendResponse(new CategorieResource($category), 'Category deleted successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting category',
-                'error' => $th->getMessage()
-            ], 500);
+            return $this->sendServerError('Error deleting category', $th->getMessage());
         }
     }
 }

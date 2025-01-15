@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use App\Services\ArticleService;
 use Auth;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Storage as FacadesStorage;
 use Log;
 use Storage;
 
-class ArticleController extends Controller
+class ArticleController extends BaseController
 {
     /**
      * @OA\Info(
@@ -121,7 +122,7 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $articles = $this->articleService->getAll();
-        return response()->json($articles);
+        return $this->sendResponse(new ArticleResource(collect($articles)), 'Articles retrieved successfully');
     }
 
     /**
@@ -166,7 +167,7 @@ class ArticleController extends Controller
     public function publishedArticles(Request $request)
     {
         $publishedArticles = $this->articleService->publishedArticles();
-        return response()->json($publishedArticles);
+        return $this->sendResponse(new ArticleResource(collect($publishedArticles)), 'Articles retrieved successfully');
     }
 
     /**
@@ -212,7 +213,7 @@ class ArticleController extends Controller
     public function scheduledArticles(Request $request)
     {
         $scheduledArticles = $this->articleService->scheduledArticles();
-        return response()->json($scheduledArticles);
+        return $this->sendResponse(new ArticleResource(collect($scheduledArticles)), 'Articles retrieved successfully');
     }
 
     /**
@@ -279,17 +280,9 @@ class ArticleController extends Controller
 
             $article = $this->articleService->create($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Article created successfully',
-                'data' => $article
-            ], 201);
+            return $this->sendResponse(new ArticleResource($article), 'Article created successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ]);
+            return $this->sendError('An error occurred', 500);
         }
     }
 
@@ -340,16 +333,9 @@ class ArticleController extends Controller
     {
         try {
             $article = $this->articleService->find($slug);
-            return response()->json([
-                'success' => true,
-                'data' => $article
-            ], 200);
+            return $this->sendResponse(new ArticleResource($article), 'Article found successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ]);
+           return $this->sendError('Article not found', 404);
         }
     }
 
@@ -427,17 +413,9 @@ class ArticleController extends Controller
         try {
             $article = $this->articleService->update($validated, $id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Article updated successfully',
-                'data' => $article
-            ], 200);
+            return $this->sendResponse(new ArticleResource($article), 'Article updated successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ]);
+            return $this->sendError('Error updating article', $th->getMessage());
         }
     }
 
@@ -489,17 +467,9 @@ class ArticleController extends Controller
     {
         try {
             $article = $this->articleService->delete($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Article deleted successfully',
-                'data' => $article
-            ], 200);
+            return $this->sendResponse(new ArticleResource($article), 'Article deleted successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ]);
+            return $this->sendError('Error deleting article', $th->getMessage());
         }
     }
 }

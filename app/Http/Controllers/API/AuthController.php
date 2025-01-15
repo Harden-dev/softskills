@@ -27,6 +27,7 @@ use Mail;
  */
 class AuthController extends Controller
 {
+
     /**
      * @OA\Schema(
      *     schema="User",

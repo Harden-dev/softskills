@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CommentResource;
 use App\Services\CommentService;
 use Exception;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class CommentController extends BaseController
 {
 
     /**
@@ -137,7 +138,9 @@ class CommentController extends Controller
 
     public function index($articleId)
     {
-        return $this->commentService->getAll($articleId);
+        $comment =  $this->commentService->getAll($articleId);
+
+        return $this->sendResponse($comment, 'Comments retrieved successfully.');
     }
 
     /**
@@ -178,18 +181,9 @@ class CommentController extends Controller
         try {
             $comment = $this->commentService->create($validated, $articleId);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Comment created successfully',
-                'data' => $comment
-            ], 201);
+            return $this->sendResponse(new CommentResource($comment), 'Comment created successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                "error" => "erreur survenue
-                ",
-                'message' => 'Une erreur est survenue',
-            ], 500);
+            return $this->sendError('Error creating comment', $th->getMessage(), 500);
         }
     }
 
@@ -230,18 +224,9 @@ class CommentController extends Controller
         try {
             $comment = $this->commentService->reply($validated, $parentId, $articleId);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Comment created successfully',
-                'data' => $comment
-            ], 201);
+            return $this->sendResponse(new CommentResource($comment), 'Comment created successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                "error" => "erreur survenue
-                ",
-                'message' => 'Une erreur est survenue' . $th->getMessage(),
-            ], 500);
+            return $this->sendError('Error creating comment', $th->getMessage(), 500);
         }
     }
 
@@ -293,16 +278,9 @@ class CommentController extends Controller
         try {
             $RepliesComments = $this->commentService->getReplies($articleId, $commentId);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Replies comments retrieved successfully',
-                'data' => $RepliesComments
-            ], 200);
+            return $this->sendResponse(new CommentResource($RepliesComments), 'Replies retrieved successfully');
         } catch (Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Une erreur est survenue' . $th->getMessage(),
-            ], 500);
+            return $this->sendError('Error retrieving replies', $th->getMessage(), 500);
         }
     }
 
@@ -342,16 +320,9 @@ class CommentController extends Controller
     {
         try {
             $comment = $this->commentService->findByid($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Comment retrieved successfully',
-                'data' => $comment
-            ], 200);
+            return $this->sendResponse(new CommentResource($comment), 'Comment retrieved successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Une erreur est survenue' . $th->getMessage(),
-            ], 500);
+            return $this->sendError('Error retrieving comment', $th->getMessage(), 500);
         }
     }
 
@@ -402,17 +373,9 @@ class CommentController extends Controller
         try {
             return $this->commentService->update($validated, $id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Comment updated successfully',
-                'data' => $comment
-            ], 200);
+            return $this->sendResponse(new CommentResource($comment), 'Comment updated successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                "error" => "erreur survenue
-                "
-            ], 500);
+            return $this->sendError('Error updating comment', $th->getMessage(), 500);
         }
     }
     /**
@@ -449,16 +412,10 @@ class CommentController extends Controller
     public function destroy($id)
     {
         try {
-            $this->commentService->delete($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Comment deleted successfully',
-            ], 200);
+          $comment =  $this->commentService->delete($id);
+            return $this->sendResponse(new CommentResource($comment), 'Comment deleted successfully');
         } catch (\Exception $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Une erreur est survenue',
-            ], 500);
+            return $this->sendError('Error deleting comment', $th->getMessage(), 500);
         }
     }
 }

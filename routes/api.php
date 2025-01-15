@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\GoogleAuthController;
 use App\Http\Controllers\API\QuoteController;
 use App\Http\Controllers\API\SubscriptionController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
@@ -68,8 +69,13 @@ Route::prefix('v2')->group(function () {
     // Routes protégées uniquement pour les administrateurs
 
     Route::middleware(['auth:api', 'admin'])->group(function () {
+        
+        Route::get('/user/list', [UserController::class, 'index']);
+        Route::put('/update/user/{id}', [UserController::class, 'update']);
+        Route::delete('/delete/user/{id}', [UserController::class, 'destroy']);
 
         Route::get('/contact/list', [ContactController::class, 'index']);
+
 
         Route::post('/add/article', [ArticleController::class, 'store']);
         Route::put('/update/article/{id}', [ArticleController::class, 'update']);

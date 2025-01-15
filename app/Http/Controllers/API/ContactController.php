@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ContactResource;
 use App\Mail\ContactNotification;
 use App\Services\ContactService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class ContactController extends Controller
+class ContactController extends BaseController
 {
     /**
      * @OA\Schema(
@@ -52,7 +53,7 @@ class ContactController extends Controller
     public function index(Request $request)
     {
         $contacts = $this->contactService->getAll();
-        return response()->json($contacts);
+        return $this->sendResponse(new ContactResource(collect($contacts)), 'Contacts retrieved successfully');
     }
 
     /**
@@ -94,15 +95,9 @@ class ContactController extends Controller
             $contact = $this->contactService->create($validated);
             Mail::to('direction@softskills.ci')->send(new ContactNotification($contact));
 
-            return response()->json([
-                'success' => 'contact created successfully',
-                'data' => $contact
-            ], 201);
+            return $this->sendResponse(new ContactResource($contact), 'Contact created successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error creating contact',
-                'error' => $e->getMessage()
-            ], 500);
+            return $this->sendError('Error creating contact', $e->getMessage());
         }
     }
 
@@ -111,17 +106,9 @@ class ContactController extends Controller
         try {
             $contact = $this->contactService->findById($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Contact retrieved successfully',
-                'data' => $contact
-            ]);
+            return $this->sendResponse(new ContactResource($contact), 'Contact retrieved successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error retrieving contact',
-                'error' => $e->getMessage()
-            ], 500);
+            return $this->sendResponse('Error retrieving contact', $e->getMessage());
         }
     }
 
@@ -173,17 +160,9 @@ class ContactController extends Controller
         try {
             $contact = $this->contactService->update($validated, $id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Contact updated successfully',
-                'data' => $contact
-            ]);
+            return $this->sendResponse(new ContactResource($contact), 'Contact updated successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating contact',
-                'error' => $e->getMessage()
-            ], 500);
+            return $this->sendResponse('Error updating contact', $e->getMessage());
         }
     }
 
@@ -221,18 +200,9 @@ class ContactController extends Controller
     {
         try {
             $contact = $this->contactService->delete($id);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Contact deleted successfully',
-                'data' => $contact
-            ]);
+            return $this->sendResponse(new ContactResource($contact), 'Contact deleted successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting contact',
-                'error' => $e->getMessage()
-            ], 500);
+            return $this->sendError('Error deleting contact', ['error' => $e->getMessage()], 500);
         }
     }
 }
